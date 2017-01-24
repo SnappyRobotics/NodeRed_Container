@@ -1,0 +1,19 @@
+{
+  "name": "nodered_container",
+  "version": "1.0.0",
+  "description": "A container package helping to launch node red from scripts",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SnappyRobotics/NodeRed_Container.git"
+  },
+  "author": "Prajankya <prajankya@gmail.com> (http://prajankya.me/)",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/SnappyRobotics/NodeRed_Container/issues"
+  },
+  "homepage": "https://github.com/SnappyRobotics/NodeRed_Container#readme"
+}

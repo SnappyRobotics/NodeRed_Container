@@ -38,4 +38,12 @@ gulp.task('install', function(done) {
   }).pipe(gulp.dest('output'))
 })
 
-gulp.task('default', ['clean', 'download'])
+
+gulp.task('build', function(done) {
+  debug('Grunt building ...')
+  return run('cd ' + nodePath + ' && ./node_modules/.bin/grunt build').exec(function() {
+    done()
+  }).pipe(gulp.dest('output'))
+})
+
+gulp.task('default', ['clean', 'download', 'install', 'build'])

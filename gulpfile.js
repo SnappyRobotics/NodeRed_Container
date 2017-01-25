@@ -5,6 +5,7 @@ const runSequence = require('run-sequence');
 const gulp = require('gulp');
 const run = require('gulp-run');
 const git = require('gulp-git');
+const bump = require('gulp-bump');
 
 const debug = require('debug')('Gulp');
 
@@ -39,13 +40,26 @@ gulp.task('install', function(done) {
   }).pipe(gulp.dest('output'))
 })
 
-
 gulp.task('build', function(done) {
   debug('Grunt building ...')
   return run('cd ' + nodePath + ' && ./node_modules/.bin/grunt build').exec(function() {
     done()
   }).pipe(gulp.dest('output'))
 })
+
+gulp.task('update-pkg', function() {
+  return gulp.src('./package.json')
+    .pipe(bump({
+      type: 'patch'
+    }))
+    .pipe(gulp.dest('./'));
+});
+
+gulp.task('bump', ['update-pkg'], function(cb) {
+  projectPackage.version =
+    JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
+  cb();
+});
 
 gulp.task('default', function() {
   runSequence('clean', 'download', 'install', 'build')

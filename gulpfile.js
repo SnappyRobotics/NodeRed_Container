@@ -1,5 +1,6 @@
 const del = require('del');
 const path = require('path');
+const runSequence = require('run-sequence');
 
 const gulp = require('gulp');
 const run = require('gulp-run');
@@ -46,4 +47,6 @@ gulp.task('build', function(done) {
   }).pipe(gulp.dest('output'))
 })
 
-gulp.task('default', ['clean', 'download', 'install', 'build'])
+gulp.task('default', function() {
+  runSequence('clean', 'download', 'install', 'build')
+})

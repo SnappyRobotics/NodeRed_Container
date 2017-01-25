@@ -1,11 +1,18 @@
+const del = require('del');
 const path = require('path');
 const gulp = require('gulp');
 const git = require('gulp-git');
 const debug = require('debug')('Gulp');
 
 gulp.task('clean', function(done) {
-
-});
+    del([path.join(__dirname, "..", "node-red")], {
+            force: true,
+            dot: true
+        })
+        .then(function() {
+            done()
+        })
+})
 
 gulp.task('download', function(done) {
     debug("Downloading Node-red .....");
@@ -16,7 +23,7 @@ gulp.task('download', function(done) {
             debug(err)
         }
         done()
-    });
-});
+    })
+})
 
-gulp.task('default', ['download']);
+gulp.task('default', ['clean', 'download'])

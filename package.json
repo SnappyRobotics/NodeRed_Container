@@ -4,7 +4,7 @@
   "description": "A container package helping to launch node red from scripts",
   "main": "index.js",
   "scripts": {
-    "start":"DEBUG=*, gulp",
+    "start": "DEBUG=*, gulp",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,6 +19,7 @@
   "homepage": "https://github.com/SnappyRobotics/NodeRed_Container#readme",
   "dependencies": {
     "debug": "^2.6.0",
+    "del": "^2.2.2",
     "gulp": "^3.9.1",
     "gulp-git": "^1.12.0"
   }

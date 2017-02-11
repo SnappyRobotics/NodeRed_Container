@@ -4,11 +4,10 @@ const debug = require('debug')('NodeRed_Container:getRedFile');
 
 var dir
 var check = function (dir_, cb) {
-  if (!dir) {
-    dir = dir_
+  if (!dir && dir_) {
+    dir = path.join(dir_, "..", "node-red")
   }
-
-  const noderedPath = path.join(dir, "..", "node-red", "red.js")
+  const noderedPath = path.join(dir, "red.js")
   debug("Searching for Node RED at ", noderedPath)
   try {
     var x = fs.accessSync(noderedPath)
@@ -41,21 +40,8 @@ if (require.main === module) {
     debug("Done")
   })
 } else {
-  check(__dirname, function (er) {
-    if (er) {
-      throw er
-    } else {
-      module.exports = true
-    }
-  })
-  /*
   module.exports = {
-    getRED: getRED,
-    getHelper: function (cb1) {
-      debug("Getting red in helper")
-      getRED(function (red) {
-        const noderedPath = path.join(dir, "..", "node-red", "red.js")
-      })
-    }
-  }*/
+    check: check,
+    path: dir
+  }
 }

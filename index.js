@@ -2,42 +2,56 @@ const fs = require('fs')
 const path = require('path')
 const debug = require('debug')('NodeRed_Container:getRedFile');
 
-var getRED = function (dir, cb) {
-  if (typeof dir == "function") {
-    cb = dir
-    dir = __dirname
+var dir
+var check = function (dir_, cb) {
+  if (!dir) {
+    dir = dir_
   }
 
   const noderedPath = path.join(dir, "..", "node-red", "red.js")
-  debug("Searching for node red")
+  debug("Searching for Node RED at ", noderedPath)
+
   fs.access(noderedPath, fs.constants.R_OK, (err) => {
     debug("Search complete")
     if (err) {
       if (err.code === "ENOENT") {
-        debug("Node red not Found")
-        var gulpFile = require('./gulpfile.js')
-        var gulp = require('gulp')
-        debug("Starting downloading...")
-        gulp.start('default', function (d, e) {
-          debug("done");
-          debug(d);
-          debug(e);
-          cb(require(noderedPath))
+        debug("Node RED not Found")
+        download(function (err) {
+          cb(err)
         })
       }
     } else {
-      debug("already found");
-      cb(require(noderedPath))
+      debug("Node RED found");
+      cb()
     }
   })
 }
 
+var download = function (cb) {
+  var gulpFile = require('./gulpfile.js')
+  var gulp = require('gulp')
+  debug("Starting downloading...")
+  gulp.start('default', function () {
+    debug("done")
+    cb()
+  })
+}
+
+//data = sync.await(fs.readFile(fname, sync.defer()))
+
 if (require.main === module) {
-  getRED(function (r) {
+  check(__dirname, function (r) {
     debug(r)
   })
 } else {
+  /*
   module.exports = {
-    getRED: getRED
-  }
+    getRED: getRED,
+    getHelper: function (cb1) {
+      debug("Getting red in helper")
+      getRED(function (red) {
+        const noderedPath = path.join(dir, "..", "node-red", "red.js")
+      })
+    }
+  }*/
 }

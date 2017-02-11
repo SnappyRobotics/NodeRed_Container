@@ -37,14 +37,17 @@ gulp.task('install', function (done) {
   debug('Installing ...')
   return run('cd ' + nodePath + ' && npm install').exec(function () {
     done()
-  }).pipe(gulp.dest('output'))
+  }))
 })
 
 gulp.task('build', function (done) {
   debug('Grunt building ...')
-  return run('cd ' + nodePath + ' && ./node_modules/.bin/grunt build').exec(function () {
+  return run('cd ' + nodePath + ' && ./node_modules/.bin/grunt build').exec(function (e, d, er) {
+    console.log(e);
+    console.log(d);
+    console.log(er);
     done()
-  }).pipe(gulp.dest('output'))
+  })
 })
 
 gulp.task('update-pkg', function () {

@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+const sync = require('synchronize')
 const debug = require('debug')('NodeRed_Container:getRedFile');
 
 var dir
@@ -10,21 +11,17 @@ var check = function (dir_, cb) {
 
   const noderedPath = path.join(dir, "..", "node-red", "red.js")
   debug("Searching for Node RED at ", noderedPath)
+  try {
+    var fs.accessSync(noderedPath)
+    debug("Node RED found");
+    cb()
 
-  fs.access(noderedPath, fs.constants.R_OK, (err) => {
-    debug("Search complete")
-    if (err) {
-      if (err.code === "ENOENT") {
-        debug("Node RED not Found")
-        download(function (err) {
-          cb(err)
-        })
-      }
-    } else {
-      debug("Node RED found");
-      cb()
-    }
-  })
+  } catch (err) {
+    debug("Node RED not Found")
+    download(function (err) {
+      cb(err)
+    })
+  }
 }
 
 var download = function (cb) {
@@ -37,13 +34,21 @@ var download = function (cb) {
   })
 }
 
-//data = sync.await(fs.readFile(fname, sync.defer()))
-
 if (require.main === module) {
-  check(__dirname, function (r) {
+  debug("start")
+  var data = sync.await(check(__dirname, sync.defer()))
+  debug(data)
+  /*check(__dirname, function (r) {
     debug(r)
-  })
+  })*/
 } else {
+  check(__dirname, function (er) {
+    if (er) {
+      throw er
+    } else {
+      module.exports = true
+    }
+  })
   /*
   module.exports = {
     getRED: getRED,

@@ -37,7 +37,7 @@ gulp.task('install', function (done) {
   debug('Installing ...')
   return run('cd ' + nodePath + ' && npm install').exec(function () {
     done()
-  }))
+  })
 })
 
 gulp.task('build', function (done) {

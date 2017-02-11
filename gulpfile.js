@@ -7,25 +7,25 @@ const run = require('gulp-run');
 const git = require('gulp-git');
 const bump = require('gulp-bump');
 
-const debug = require('debug')('Gulp');
+const debug = require('debug')('NodeRed_Container:Gulp');
 
 var nodePath = path.join(__dirname, "..", "node-red")
 
-gulp.task('clean', function(done) {
+gulp.task('clean', function (done) {
   del([nodePath], {
       force: true,
       dot: true
     })
-    .then(function() {
+    .then(function () {
       done()
     })
 })
 
-gulp.task('download', function(done) {
+gulp.task('download', function (done) {
   debug("Downloading Node-red .....");
   git.clone('https://github.com/node-red/node-red', {
     args: nodePath + ' --depth 1 --recurse-submodules'
-  }, function(err) {
+  }, function (err) {
     if (err) {
       debug(err)
     }
@@ -33,21 +33,21 @@ gulp.task('download', function(done) {
   })
 })
 
-gulp.task('install', function(done) {
+gulp.task('install', function (done) {
   debug('Installing ...')
-  return run('cd ' + nodePath + ' && npm install').exec(function() {
+  return run('cd ' + nodePath + ' && npm install').exec(function () {
     done()
   }).pipe(gulp.dest('output'))
 })
 
-gulp.task('build', function(done) {
+gulp.task('build', function (done) {
   debug('Grunt building ...')
-  return run('cd ' + nodePath + ' && ./node_modules/.bin/grunt build').exec(function() {
+  return run('cd ' + nodePath + ' && ./node_modules/.bin/grunt build').exec(function () {
     done()
   }).pipe(gulp.dest('output'))
 })
 
-gulp.task('update-pkg', function() {
+gulp.task('update-pkg', function () {
   return gulp.src('./package.json')
     .pipe(bump({
       type: 'patch'
@@ -55,12 +55,12 @@ gulp.task('update-pkg', function() {
     .pipe(gulp.dest('./'));
 });
 
-gulp.task('bump', ['update-pkg'], function(cb) {
+gulp.task('bump', ['update-pkg'], function (cb) {
   projectPackage.version =
     JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
   cb();
 });
 
-gulp.task('default', function() {
+gulp.task('default', function () {
   runSequence('clean', 'download', 'install', 'build')
 })

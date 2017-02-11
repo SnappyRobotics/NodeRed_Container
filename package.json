@@ -4,7 +4,7 @@
   "description": "A container package helping to launch node red from scripts",
   "main": "index.js",
   "scripts": {
-    "start": "DEBUG=*, node .",
+    "start": "DEBUG=NodeRed_Container:*, node .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

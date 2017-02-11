@@ -1,6 +1,5 @@
 const fs = require('fs')
 const path = require('path')
-const sync = require('synchronize')
 const debug = require('debug')('NodeRed_Container:getRedFile');
 
 var dir
@@ -12,7 +11,7 @@ var check = function (dir_, cb) {
   const noderedPath = path.join(dir, "..", "node-red", "red.js")
   debug("Searching for Node RED at ", noderedPath)
   try {
-    var fs.accessSync(noderedPath)
+    var x = fs.accessSync(noderedPath)
     debug("Node RED found");
     cb()
 
@@ -35,12 +34,12 @@ var download = function (cb) {
 }
 
 if (require.main === module) {
-  debug("start")
-  var data = sync.await(check(__dirname, sync.defer()))
-  debug(data)
-  /*check(__dirname, function (r) {
-    debug(r)
-  })*/
+  check(__dirname, function (err) {
+    if (err) {
+      throw err
+    }
+    debug("Done")
+  })
 } else {
   check(__dirname, function (er) {
     if (er) {

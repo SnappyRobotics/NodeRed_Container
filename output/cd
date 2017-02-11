@@ -1,0 +1,29 @@
+Running "clean:build" (clean) task
+>> 4 paths cleaned.
+
+Running "jsonlint:messages" (jsonlint) task
+>> 3 files lint free.
+
+Running "jsonlint:keymaps" (jsonlint) task
+>> 1 file lint free.
+
+Running "concat:build" (concat) task
+
+Running "concat:vendor" (concat) task
+
+Running "copy:build" (copy) task
+Created 10 directories, copied 118 files
+
+Running "uglify:build" (uglify) task
+>> 6 files created.
+
+Running "sass:build" (sass) task
+
+Running "attachCopyright:js" (attachCopyright) task
+Attached copyright to public/red/red.min.js
+Attached copyright to public/red/main.min.js
+
+Running "attachCopyright:css" (attachCopyright) task
+Attached copyright to public/red/style.min.css
+
+Done.

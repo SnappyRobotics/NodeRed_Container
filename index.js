@@ -22,3 +22,5 @@ fs.access(noderedPath, fs.constants.R_OK, (err) => {
     }
   }
 })
+
+module.exports = noderedPath

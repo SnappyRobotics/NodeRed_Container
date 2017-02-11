@@ -43,9 +43,9 @@ gulp.task('install', function (done) {
 gulp.task('build', function (done) {
   debug('Grunt building ...')
   return run('cd ' + nodePath + ' && ./node_modules/.bin/grunt build').exec(function (e, d, er) {
-    console.log(e);
-    console.log(d);
-    console.log(er);
+    debug(e);
+    debug(d);
+    debug(er);
     done()
   })
 })

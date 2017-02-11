@@ -41,7 +41,6 @@ if (require.main === module) {
   })
 } else {
   module.exports = {
-    check: check,
-    path: dir
+    check: check
   }
 }

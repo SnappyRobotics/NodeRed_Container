@@ -43,11 +43,15 @@ gulp.task('install', function (done) {
 gulp.task('build', function (done) {
   debug('Grunt building ...')
   return run('cd ' + nodePath + ' && ./node_modules/.bin/grunt build').exec(function (e, d, er) {
-    debug(e);
-    debug(d);
-    debug(er);
-    done()
-  })
+      debug(e);
+      debug(d);
+      debug(er);
+    })
+    .pipe(process.stdout)
+    .on('error', function handleError() {
+      done();
+    })
+    .on('finish', done)
 })
 
 gulp.task('update-pkg', function () {

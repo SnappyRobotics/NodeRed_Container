@@ -1,6 +1,6 @@
 {
   "name": "nodered_container",
-  "version": "2.0.48",
+  "version": "2.0.49",
   "description": "A container package helping to launch node red from scripts",
   "main": "index.js",
   "scripts": {

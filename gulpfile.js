@@ -1,7 +1,7 @@
 const del = require('del');
 const path = require('path');
 const runSequence = require('run-sequence');
-
+const fs = require('fs');
 const gulp = require('gulp');
 const run = require('gulp-run');
 const git = require('gulp-git');
@@ -9,7 +9,7 @@ const bump = require('gulp-bump');
 
 const debug = require('debug')('NodeRed_Container:Gulp');
 
-var nodePath = path.join(__dirname, "..", "node-red")
+var nodePath = path.join(__dirname, "..", "..", "..", "node-red")
 
 gulp.task('clean', function (done) {
   del([nodePath], {
@@ -63,6 +63,7 @@ gulp.task('update-pkg', function () {
 });
 
 gulp.task('bump', ['update-pkg'], function (cb) {
+  projectPackage = {}
   projectPackage.version =
     JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
   cb();

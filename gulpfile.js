@@ -9,6 +9,20 @@ const bump = require('gulp-bump');
 
 const debug = require('debug')('NodeRed_Container:Gulp');
 
+var childProcess = require('child_process');
+(function () {
+  var childProcess = require("child_process");
+  var oldSpawn = childProcess.spawn;
+
+  function mySpawn() {
+    console.log('spawn called');
+    console.log(arguments);
+    var result = oldSpawn.apply(this, arguments);
+    return result;
+  }
+  childProcess.spawn = mySpawn;
+})();
+
 var nodePath = path.join(__dirname, "..", "..", "..", "node-red")
 
 gulp.task('clean', function (done) {
@@ -33,29 +47,31 @@ gulp.task('download', function (done) {
   })
 })
 
-gulp.task('install', ['download'], function () {
+gulp.task('install', function (done) {
   debug('Installing ...')
-  return run('cd ' + nodePath + ' && npm install')
-    .exec()
+  var install = childProcess.spawn('npm', ['install'], {
+    cwd: nodePath,
+    stdio: "inherit"
+  });
+
+  install.on('exit', function (code) {
+    debug('child process exited with code ' + code.toString());
+    done();
+  });
 })
 
 gulp.task('build', function (done) {
   debug('Grunt building ...')
-  try {
-    return run('cd ' + nodePath + ' && ./node_modules/.bin/grunt build').exec(function (e, d, er) {
-        debug(e);
-        debug(d);
-        debug(er);
-      })
-      .pipe(process.stdout)
-      .on('error', function handleError() {
-        done();
-      })
-      .on('finish', done)
-  } catch (er) {
-    debug(er)
-    done()
-  }
+  var build = childProcess
+    .spawn(path.join('node_modules', '.bin', 'grunt'), ['build'], {
+      cwd: nodePath,
+      stdio: "inherit"
+    });
+
+  build.on('exit', function (code) {
+    debug('child process exited with code ' + code.toString());
+    done();
+  });
 })
 
 gulp.task('update-pkg', function () {
@@ -74,5 +90,5 @@ gulp.task('bump', ['update-pkg'], function (cb) {
 });
 
 gulp.task('default', function () {
-  runSequence('clean', 'download', 'install', 'build')
+  runSequence('download', 'install', 'build')
 })

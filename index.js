@@ -26,7 +26,7 @@ var download = function (cb) {
   var gulpFile = require('./gulpfile.js')
   var gulp = require('gulp')
   debug("Starting downloading...")
-  gulp.start('install', function () {
+  gulp.start('default', function () {
     debug("done")
     cb()
   })

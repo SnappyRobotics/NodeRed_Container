@@ -33,7 +33,7 @@ gulp.task('download', function (done) {
   })
 })
 
-gulp.task('install', function (done) {
+gulp.task('install', ['download'], function (done) {
   debug('Installing ...')
   return run('cd ' + nodePath + ' && npm install').exec(function () {
     done()
